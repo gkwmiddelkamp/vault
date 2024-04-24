@@ -3,6 +3,7 @@ package server
 import (
 	"log"
 	"net/http"
+	"regexp"
 	"vault/database"
 	"vault/server/interceptors"
 	"vault/vault"
@@ -29,17 +30,22 @@ func (m *CustomMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	cfg := vault.NewHandlerConfig(m.db)
 	for _, route := range m.routes {
-		if r.Method == route.GetMethod() && r.URL.Path == route.GetPattern() {
-			for _, i := range m.interceptors {
-				res := i.Before(w, r, vault.NewInterceptorConfig(m.db, route, &cfg))
-				if res.Done {
-					return
-				}
-			}
-			log.Println(route.GetMethod() + " " + route.GetPattern())
 
-			route.Handle(cfg).ServeHTTP(w, r)
-			return
+		if r.Method == route.GetMethod() {
+			regex, _ := regexp.Compile(route.GetPattern() + "$")
+
+			if regex.MatchString(r.URL.Path) {
+				for _, i := range m.interceptors {
+					res := i.Before(w, r, vault.NewInterceptorConfig(m.db, &route, &cfg))
+					if res.Done {
+						return
+					}
+				}
+				log.Println(route.GetMethod() + " " + route.GetPattern())
+
+				route.Handle(cfg).ServeHTTP(w, r)
+				return
+			}
 		}
 	}
 
@@ -55,5 +61,6 @@ func (m *CustomMux) init() {
 
 	m.interceptors = append(m.interceptors, interceptors.StaticHeadersInterceptor)
 	m.interceptors = append(m.interceptors, interceptors.AuthInterceptor)
+	m.interceptors = append(m.interceptors, interceptors.ParamsInterceptor)
 
 }

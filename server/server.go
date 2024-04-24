@@ -5,6 +5,10 @@ import (
 	"vault/vault"
 )
 
+const (
+	objectIdRegex = "([a-z0-9]{24})"
+)
+
 func Load(mux *CustomMux) {
 
 	// Public Endpoints
@@ -17,5 +21,6 @@ func Load(mux *CustomMux) {
 
 	// Authenticated endpoints
 	mux.AddRoute(vault.NewRoute("/token", "GET", vault.EnvironmentAdmin, handlers.TokenListHandler))
+	mux.AddRoute(vault.NewRoute("/token/"+objectIdRegex, "GET", vault.EnvironmentAdmin, handlers.TokenGetHandler))
 
 }

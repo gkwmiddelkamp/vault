@@ -11,7 +11,7 @@ type Interceptor interface {
 
 type InterceptorConfig struct {
 	db            *database.MongoDB
-	handler       Route
+	route         *Route
 	handlerConfig *HandlerConfig
 }
 
@@ -20,7 +20,11 @@ func (i *InterceptorConfig) GetDb() *database.MongoDB {
 }
 
 func (i *InterceptorConfig) GetMinimalAuth() TokenType {
-	return i.handler.minimalAuth
+	return i.route.minimalAuth
+}
+
+func (i *InterceptorConfig) GetRoute() *Route {
+	return i.route
 }
 
 func (i *InterceptorConfig) SetHandlerConfig(handlerConfig *HandlerConfig) {
@@ -31,10 +35,10 @@ func (i *InterceptorConfig) GetHandlerConfig() *HandlerConfig {
 	return i.handlerConfig
 }
 
-func NewInterceptorConfig(db *database.MongoDB, handler Route, handlerConfig *HandlerConfig) *InterceptorConfig {
+func NewInterceptorConfig(db *database.MongoDB, route *Route, handlerConfig *HandlerConfig) *InterceptorConfig {
 	return &InterceptorConfig{
 		db:            db,
-		handler:       handler,
+		route:         route,
 		handlerConfig: handlerConfig,
 	}
 }

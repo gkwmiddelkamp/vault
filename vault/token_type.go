@@ -4,10 +4,10 @@ type TokenType int
 
 const (
 	Public           = 0
-	ReadOnly         = 10
-	ReadWrite        = 20
-	EnvironmentAdmin = 50
-	MasterAdmin      = 100
+	ReadOnly         = 1
+	ReadWrite        = 2
+	EnvironmentAdmin = 3
+	MasterAdmin      = 4
 )
 
 func (t TokenType) String() string {

@@ -10,6 +10,7 @@ type HandlerConfig struct {
 	db            *database.MongoDB
 	tokenType     TokenType
 	environmentId primitive.ObjectID
+	routeParams   []string
 }
 
 func NewHandlerConfig(db *database.MongoDB) HandlerConfig {
@@ -40,4 +41,19 @@ func (h *HandlerConfig) GetEnvironmentId() primitive.ObjectID {
 
 func (h *HandlerConfig) SetEnvironmentId(id primitive.ObjectID) {
 	h.environmentId = id
+}
+
+func (h *HandlerConfig) GetRouteParams() []string {
+	return h.routeParams
+}
+
+func (h *HandlerConfig) SetRouteParams(routeParams []string) {
+	h.routeParams = routeParams
+}
+
+func (h *HandlerConfig) GetRouteParam(i int) string {
+	if len(h.routeParams) < i+1 {
+		return ""
+	}
+	return h.routeParams[i]
 }
