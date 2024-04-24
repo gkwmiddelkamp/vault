@@ -21,6 +21,8 @@ func Load(mux *CustomMux) {
 
 	// Authenticated endpoints
 	mux.AddRoute(vault.NewRoute("/token", "GET", vault.EnvironmentAdmin, handlers.TokenListHandler))
+	mux.AddRoute(vault.NewRoute("/token", "POST", vault.EnvironmentAdmin, handlers.TokenPostHandler))
+
 	mux.AddRoute(vault.NewRoute("/token/"+objectIdRegex, "GET", vault.EnvironmentAdmin, handlers.TokenGetHandler))
 
 }

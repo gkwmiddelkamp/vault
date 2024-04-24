@@ -7,10 +7,11 @@ import (
 )
 
 type HandlerConfig struct {
-	db            *database.MongoDB
-	tokenType     TokenType
-	environmentId primitive.ObjectID
-	routeParams   []string
+	db               *database.MongoDB
+	tokenType        TokenType
+	environmentId    primitive.ObjectID
+	tokenDescription string
+	routeParams      []string
 }
 
 func NewHandlerConfig(db *database.MongoDB) HandlerConfig {
@@ -41,6 +42,14 @@ func (h *HandlerConfig) GetEnvironmentId() primitive.ObjectID {
 
 func (h *HandlerConfig) SetEnvironmentId(id primitive.ObjectID) {
 	h.environmentId = id
+}
+
+func (h *HandlerConfig) GetTokenDescription() string {
+	return h.tokenDescription
+}
+
+func (h *HandlerConfig) SetTokenDescription(description string) {
+	h.tokenDescription = description
 }
 
 func (h *HandlerConfig) GetRouteParams() []string {

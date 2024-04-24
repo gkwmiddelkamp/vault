@@ -22,3 +22,8 @@ func (h *error) Handle(cfg vault.HandlerConfig) http.HandlerFunc {
 		}
 	}
 }
+
+func ThrowError(w http.ResponseWriter, code int, message string) {
+	response, _ := json.Marshal(responses.NewError(code, message))
+	w.Write(response)
+}
