@@ -9,7 +9,7 @@ type TokenCreateView struct {
 	Secret string `json:"secret"`
 }
 
-func NewTokenCreateView(token vault.Token) TokenCreateView {
+func NewTokenCreateView(token *vault.Token) TokenCreateView {
 	tokenViewResult := NewTokenView(token)
 	result := TokenCreateView{TokenView: tokenViewResult, Secret: token.GetSecret()}
 

@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"regexp"
+	"strings"
 	"vault/database"
 	"vault/server/interceptors"
 	"vault/vault"
@@ -26,15 +27,18 @@ func (m *CustomMux) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		m.init()
 	}
 
-	log.Printf("Requesting %s", r.URL.Path)
-
 	cfg := vault.NewHandlerConfig(m.db)
 	for _, route := range m.routes {
 
 		if r.Method == route.GetMethod() {
+			requestedPath := r.URL.Path
+			// Strip last slash to match list endpoints
+			if strings.HasSuffix(requestedPath, "/") {
+				requestedPath = requestedPath[:len(requestedPath)-1]
+			}
 			regex, _ := regexp.Compile(route.GetPattern() + "$")
 
-			if regex.MatchString(r.URL.Path) {
+			if regex.MatchString(requestedPath) {
 				for _, i := range m.interceptors {
 					res := i.Before(w, r, vault.NewInterceptorConfig(m.db, &route, &cfg))
 					if res.Done {

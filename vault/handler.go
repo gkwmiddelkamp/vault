@@ -7,11 +7,12 @@ import (
 )
 
 type HandlerConfig struct {
-	db               *database.MongoDB
-	tokenType        TokenType
-	environmentId    primitive.ObjectID
-	tokenDescription string
-	routeParams      []string
+	db                *database.MongoDB
+	tokenType         TokenType
+	environmentId     primitive.ObjectID
+	tokenDescription  string
+	routeParams       []string
+	environmentSecret []byte
 }
 
 func NewHandlerConfig(db *database.MongoDB) HandlerConfig {
@@ -65,4 +66,12 @@ func (h *HandlerConfig) GetRouteParam(i int) string {
 		return ""
 	}
 	return h.routeParams[i]
+}
+
+func (h *HandlerConfig) GetEnvironmentSecret() []byte {
+	return h.environmentSecret
+}
+
+func (h *HandlerConfig) SetEnvironmentSecret(secret []byte) {
+	h.environmentSecret = secret
 }

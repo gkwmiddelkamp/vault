@@ -6,7 +6,7 @@ import (
 )
 
 type TokenView struct {
-	Id            primitive.ObjectID `json:"_id"`
+	Id            primitive.ObjectID `json:"id"`
 	Description   string             `json:"description,omitempty"`
 	EnvironmentId primitive.ObjectID `json:"environmentId,omitempty"`
 	CreatedAt     string             `json:"createdAt,omitempty"`
@@ -15,7 +15,7 @@ type TokenView struct {
 	TokenType     string             `json:"tokenType,omitempty"`
 }
 
-func NewTokenView(token vault.Token) TokenView {
+func NewTokenView(token *vault.Token) TokenView {
 	result := TokenView{
 		Id:            token.Id,
 		Description:   token.Description,

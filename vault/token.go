@@ -14,24 +14,28 @@ import (
 
 const TokenCollection = "token"
 const TokenLength = 50
+const KeyLength = 32
+const ObjectIdLength = 24
 
 type Token struct {
-	Id            primitive.ObjectID `bson:"_id"`
-	Description   string             `bson:"description,omitempty"`
-	Token         string             `bson:"token,omitempty"`
-	secret        string             `bson:"secret,omitempty"`
-	EnvironmentId primitive.ObjectID `bson:"environmentId,omitempty"`
-	CreatedAt     primitive.DateTime `bson:"createdAt,omitempty"`
-	CreatedBy     string             `bson:"createdBy,omitempty"`
-	ExpiresAt     primitive.DateTime `bson:"expiresAt,omitempty"`
-	TokenType     TokenType          `bson:"tokenType,omitempty"`
+	Id             primitive.ObjectID `bson:"_id"`
+	Description    string             `bson:"description,omitempty"`
+	Token          string             `bson:"token,omitempty"`
+	secret         string             `bson:"secret,omitempty"`
+	EnvironmentId  primitive.ObjectID `bson:"environmentId,omitempty"`
+	CreatedAt      primitive.DateTime `bson:"createdAt,omitempty"`
+	CreatedBy      string             `bson:"createdBy,omitempty"`
+	LastModifiedAt primitive.DateTime `bson:"lastModifiedAt,omitempty"`
+	LastModifiedBy string             `bson:"lastModifiedBy,omitempty"`
+	ExpiresAt      primitive.DateTime `bson:"expiresAt,omitempty"`
+	TokenType      TokenType          `bson:"tokenType,omitempty"`
 }
 
 func (t *Token) SetExpiresAt(time primitive.DateTime) {
 	t.ExpiresAt = time
 }
 
-func NewToken(description string, environmentId primitive.ObjectID, createdBy string, tokenType TokenType) Token {
+func NewToken(description string, environmentId primitive.ObjectID, createdBy string, tokenType TokenType, environmentSecret []byte) Token {
 	token := Token{}
 	token.Id = primitive.NewObjectID()
 	objectIdHex := token.Id.Hex()
@@ -44,8 +48,8 @@ func NewToken(description string, environmentId primitive.ObjectID, createdBy st
 
 	// Create token and secret
 	checkToken := internal.RandomString(TokenLength)
-	key := internal.RandomString(32)
-	userTokenSecret := string(key) + objectIdHex + string(checkToken)
+	key := internal.RandomString(KeyLength)
+	userTokenSecret := string(key) + objectIdHex + string(checkToken) + string(environmentSecret)
 	userTokenB64 := base64.StdEncoding.EncodeToString([]byte(userTokenSecret))
 	token.secret = userTokenB64
 
