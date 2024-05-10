@@ -11,6 +11,7 @@ import (
 	"log"
 	"net/http"
 	"time"
+	"vault/server/handlers"
 	"vault/server/services"
 	"vault/vault"
 )
@@ -27,19 +28,19 @@ func (i authInterceptor) Before(w http.ResponseWriter, r *http.Request, cfg *vau
 	if cfg.GetMinimalAuth() > vault.Public {
 		header := r.Header.Get(Header)
 		if header == "" {
-			http.Error(w, UnauthorizedText, http.StatusUnauthorized)
+			handlers.ThrowError(w, http.StatusUnauthorized, UnauthorizedText)
 			return vault.Done()
 		}
 
 		token, err := i.lookup(header, cfg)
 		if err != nil {
 			log.Println("Invalid token: " + err.Error())
-			http.Error(w, UnauthorizedText, http.StatusUnauthorized)
+			handlers.ThrowError(w, http.StatusUnauthorized, UnauthorizedText)
 			return vault.Done()
 		}
 		if token.TokenType < cfg.GetMinimalAuth() {
 			log.Println("Unauthorized")
-			http.Error(w, UnauthorizedText, http.StatusUnauthorized)
+			handlers.ThrowError(w, http.StatusUnauthorized, UnauthorizedText)
 			return vault.Done()
 		}
 	}
