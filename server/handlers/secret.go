@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"vault/server/models"
 	"vault/server/responses"
@@ -16,9 +17,9 @@ type secretList struct {
 var SecretListHandler vault.Handler = &secretList{}
 
 func checkTokenType(tokenType vault.TokenType) error {
-	/*	if tokenType >= vault.EnvironmentAdmin {
+	if tokenType >= vault.EnvironmentAdmin {
 		return errors.New("token leven too high for secret management")
-	}*/
+	}
 	return nil
 }
 
