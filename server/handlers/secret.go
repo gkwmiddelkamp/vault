@@ -130,12 +130,12 @@ func (h *secretDelete) Handle(cfg vault.HandlerConfig) http.HandlerFunc {
 	}
 }
 
-type secretDecode struct {
+type secretDecrypt struct {
 }
 
-var SecretDecodeHandler vault.Handler = &secretDecode{}
+var SecretDecryptHandler vault.Handler = &secretDecrypt{}
 
-func (h *secretDecode) Handle(cfg vault.HandlerConfig) http.HandlerFunc {
+func (h *secretDecrypt) Handle(cfg vault.HandlerConfig) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if err := checkTokenType(cfg.GetTokenType()); err != nil {
 			ThrowError(w, http.StatusUnauthorized, err.Error())
@@ -149,7 +149,13 @@ func (h *secretDecode) Handle(cfg vault.HandlerConfig) http.HandlerFunc {
 			ThrowError(w, http.StatusNotFound, err.Error())
 			return
 		}
-		response, err := json.Marshal(views.NewSecretDecodeView(result.Secret))
+
+		decryptedSecret, err := secretService.DecryptSecret(result.Secret, cfg.GetEnvironmentSecret())
+		if err != nil {
+			ThrowError(w, http.StatusBadRequest, err.Error())
+			return
+		}
+		response, err := json.Marshal(views.NewSecretDecodeView(string(decryptedSecret)))
 		w.Write(response)
 	}
 }

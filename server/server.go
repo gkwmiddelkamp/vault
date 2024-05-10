@@ -33,6 +33,6 @@ func Load(mux *CustomMux) {
 
 	mux.AddRoute(vault.NewRoute("/secret/"+objectIdOrNameRegex, "GET", vault.ReadWrite, handlers.SecretGetHandler))
 	mux.AddRoute(vault.NewRoute("/secret/"+objectIdOrNameRegex, "DELETE", vault.ReadWrite, handlers.SecretDeleteHandler))
-	mux.AddRoute(vault.NewRoute("/secret/"+objectIdOrNameRegex+"/decode", "GET", vault.ReadOnly, handlers.SecretDecodeHandler))
+	mux.AddRoute(vault.NewRoute("/secret/"+objectIdOrNameRegex+"/decrypt", "GET", vault.ReadOnly, handlers.SecretDecryptHandler))
 
 }
