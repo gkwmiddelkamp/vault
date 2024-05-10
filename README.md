@@ -1,7 +1,9 @@
-
+<img src="https://vault.pnck.nl/cdn/logo.png"  alt=""/>
 
 Vault is a project to have a light-weight, secure and multi-tenant solution for encrypted password storage. It provides a simple Rest API where you can manage your environments and tokens.
 It uses a MongoDB database as the storage backend. 
+
+**This project is a work in progress, do not use in production until v1.0.0 is available**
 
 # Environments
 Security is key in the project. You can create separate environments for your projects or customers. All environments use unique encryption keys, which are never stored in the database and are only available to the customer.
