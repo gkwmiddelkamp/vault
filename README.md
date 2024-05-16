@@ -74,7 +74,7 @@ spec:
         app: vault
     spec:
       containers:
-      - image: ghcr.io/gkwmiddelkamp/vault
+      - image: gkwmiddelkamp/vault
         name: vault
         env:
         - name: MONGODB_URI
@@ -96,5 +96,21 @@ spec:
             runAsUser: 1000
             seccompProfile:
               type: RuntimeDefault
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: vault
+  name: vault
+spec:
+  ports:
+    - name: api
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: vault
+  type: ClusterIP
 
 ```
