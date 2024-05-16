@@ -5,6 +5,18 @@ It uses a MongoDB database as the storage backend.
 
 **This project is a work in progress, do not use in production until v1.0.0 is available**
 
+**Release:**
+
+[![Release Version](https://img.shields.io/github/v/release/gkwmiddelkamp/vault?label=vault)](https://github.com/gkwmiddelkamp/vault/releases/latest)
+
+**Last build:** 
+
+![Last build](https://github.com/gkwmiddelkamp/vault/actions/workflows/go.yml/badge.svg)
+
+**Last publish:**
+
+![Last publish](https://github.com/gkwmiddelkamp/vault/actions/workflows/docker-publish.yml/badge.svg)
+
 # Environments
 Security is key in the project. You can create separate environments for your projects or customers. All environments use unique encryption keys, which are never stored in the database and are only available to the customer.
 At the first start of the application, the Master Admin token will be logged as output once. Save it, it will never be shown again.
