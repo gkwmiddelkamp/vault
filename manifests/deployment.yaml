@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: vault
-          image: gkwmiddelkamp/vault
+          image: ghcr.io/gkwmiddelkamp/vault
           imagePullPolicy: Always
           env:
             - name: MONGODB_URI
