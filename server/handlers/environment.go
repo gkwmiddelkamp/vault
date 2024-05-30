@@ -17,6 +17,16 @@ type environmentList struct {
 
 var EnvironmentListHandler vault.Handler = &environmentList{}
 
+// EnvironmentList godoc
+//
+//	@Summary		Environment List
+//	@Description	Get a list of environments
+//	@Tags			Environment
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{array}	views.EnvironmentView
+//	@Failure		404	{string}	string	"Not found"
+//	@Router			/environment [get]
 func (h *environmentList) Handle(cfg vault.HandlerConfig) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		service := services.NewEnvironmentService(cfg.GetDb())
@@ -40,6 +50,16 @@ type environmentGet struct {
 
 var EnvironmentGetHandler vault.Handler = &environmentGet{}
 
+// EnvironmentGet godoc
+//
+//	@Summary		Environment Get
+//	@Description	Get a single environment
+//	@Tags			Environment
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	views.EnvironmentView
+//	@Failure		404	{string}	string	"Not found"
+//	@Router			/environment/{id} [get]
 func (h *environmentGet) Handle(cfg vault.HandlerConfig) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		service := services.NewEnvironmentService(cfg.GetDb())
@@ -60,6 +80,18 @@ type environmentPost struct {
 
 var EnvironmentPostHandler vault.Handler = &environmentPost{}
 
+// EnvironmentPost godoc
+//
+// @Summary		Environment Create
+// @Description	Create a new environment
+// @Tags			Environment
+// @Accept			json
+// @Produce		json
+// @Success		200	{object}	views.EnvironmentCreateView
+// @Failure		401	{string}	string	"Unauthorized"
+// @Failure		402	{string}	string	"Bad request"
+// @Router			/environment [post]
+// @Param 			request body models.EnvironmentCreate true "Environment create object"
 func (h *environmentPost) Handle(cfg vault.HandlerConfig) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var requestBody models.EnvironmentCreate
@@ -95,6 +127,17 @@ type environmentDelete struct {
 
 var EnvironmentDeleteHandler vault.Handler = &environmentDelete{}
 
+// EnvironmentDelete godoc
+//
+// @Summary		Environment Delete
+// @Description	Delete an existing environment and all objects belonging to that environment
+// @Tags			Environment
+// @Accept			json
+// @Produce		json
+// @Success		201	{string}	string "Accepted"
+// @Failure		401	{string}	string	"Unauthorized"
+// @Failure		402	{string}	string	"Bad request"
+// @Router			/environment/{id} [delete]
 func (h *environmentDelete) Handle(cfg vault.HandlerConfig) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		environmentService := services.NewEnvironmentService(cfg.GetDb())

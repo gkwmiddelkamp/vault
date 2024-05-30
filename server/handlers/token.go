@@ -16,6 +16,16 @@ type tokenList struct {
 
 var TokenListHandler vault.Handler = &tokenList{}
 
+// TokenList godoc
+//
+//	@Summary		Token List
+//	@Description	Get a list of tokens
+//	@Tags			Token
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{array}	views.TokenView
+//	@Failure		404	{string}	string	"Not found"
+//	@Router			/token [get]
 func (h *tokenList) Handle(cfg vault.HandlerConfig) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		filter := bson.D{{"environmentId", cfg.GetEnvironmentId()}}
@@ -43,6 +53,16 @@ type tokenGet struct {
 
 var TokenGetHandler vault.Handler = &tokenGet{}
 
+// TokenGet godoc
+//
+//	@Summary		Token Get
+//	@Description	Get a single token
+//	@Tags			Token
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	views.TokenView
+//	@Failure		404	{string}	string	"Not found"
+//	@Router			/token/{id} [get]
 func (h *tokenGet) Handle(cfg vault.HandlerConfig) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		tokenService := services.NewTokenService(cfg.GetDb())
@@ -66,6 +86,19 @@ type tokenPost struct {
 
 var TokenPostHandler vault.Handler = &tokenPost{}
 
+// TokenPost godoc
+//
+//	@Summary		Token Create
+//	@Description	Create a new token
+//	@Tags			Token
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	views.TokenCreateView
+//	@Failure		402	{string}	string	"Bad request"
+//	@Failure		404	{string}	string	"Not found"
+//	@Router			/token [post]
+//
+// @Param 			request body models.TokenCreate true "Token create object"
 func (h *tokenPost) Handle(cfg vault.HandlerConfig) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var requestBody models.TokenCreate
@@ -103,6 +136,17 @@ type tokenDelete struct {
 
 var TokenDeleteHandler vault.Handler = &tokenDelete{}
 
+// TokenDelete godoc
+//
+//	@Summary		Token Delete
+//	@Description	Delete a token
+//	@Tags			Token
+//	@Accept			json
+//	@Produce		json
+//	@Success		204	{string}	string  "Accepted"
+//	@Failure		402	{string}	string	"Bad request"
+//	@Failure		404	{string}	string	"Not found"
+//	@Router			/token/{id} [delete]
 func (h *tokenDelete) Handle(cfg vault.HandlerConfig) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		tokenService := services.NewTokenService(cfg.GetDb())

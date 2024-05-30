@@ -23,6 +23,14 @@ func checkTokenType(tokenType vault.TokenType) error {
 	return nil
 }
 
+// SecretListHandler godoc
+//
+//	@Summary		Secret List
+//	@Description	Get a secret list
+//	@Tags			Secret
+//	@Produce		json
+//	@Success		200	{array}	views.SecretView
+//	@Router			/secret [get]
 func (h *secretList) Handle(cfg vault.HandlerConfig) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if err := checkTokenType(cfg.GetTokenType()); err != nil {
@@ -52,6 +60,14 @@ type secretGet struct {
 
 var SecretGetHandler vault.Handler = &secretGet{}
 
+// SecretGetHandler godoc
+//
+//	@Summary		Secret Get
+//	@Description	Get a single secret
+//	@Tags			Secret
+//	@Produce		json
+//	@Success		200	{object}	views.SecretView
+//	@Router			/secret/{id} [get]
 func (h *secretGet) Handle(cfg vault.HandlerConfig) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if err := checkTokenType(cfg.GetTokenType()); err != nil {
@@ -76,6 +92,16 @@ type secretPost struct {
 
 var SecretPostHandler vault.Handler = &secretPost{}
 
+// SecretPostHandler godoc
+//
+// @Summary		Secret Create
+// @Description	Create a new secret
+// @Tags			Secret
+// @Accept		json
+// @Produce		json
+// @Success		200	{object}	views.SecretView
+// @Router			/secret [post]
+// @Param 	request body models.SecretCreate true "Secret create object"
 func (h *secretPost) Handle(cfg vault.HandlerConfig) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if err := checkTokenType(cfg.GetTokenType()); err != nil {
@@ -107,6 +133,14 @@ type secretDelete struct {
 
 var SecretDeleteHandler vault.Handler = &secretDelete{}
 
+// SecretDeleteHandler godoc
+//
+// @Summary		Secret Delete
+// @Description	Delete a secret
+// @Tags			Secret
+// @Produce		json
+// @Success		204	{nil}  string "Accepted"
+// @Router			/secret/{id} [delete]
 func (h *secretDelete) Handle(cfg vault.HandlerConfig) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if err := checkTokenType(cfg.GetTokenType()); err != nil {
@@ -136,6 +170,14 @@ type secretDecrypt struct {
 
 var SecretDecryptHandler vault.Handler = &secretDecrypt{}
 
+// SecretDecryptHandler godoc
+//
+// @Summary		Secret Decrypt
+// @Description	Get a decrypted secret
+// @Tags			Secret
+// @Produce		json
+// @Success		200	{object} views.SecretDecryptView
+// @Router			/secret/{id}/decrypt [get]
 func (h *secretDecrypt) Handle(cfg vault.HandlerConfig) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if err := checkTokenType(cfg.GetTokenType()); err != nil {

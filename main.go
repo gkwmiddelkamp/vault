@@ -16,6 +16,16 @@ var (
 	envMongodbUri = flag.String("mongodb", "", "MongoDB URI")
 )
 
+// @title Vault API
+// @version 1.0
+// @description Vault is a project to have a light-weight, secure and multi-tenant solution for encrypted password storage. It provides a simple Rest API where you can manage your environments and tokens. It uses a MongoDB database as the storage backend.
+
+// @BasePath /
+// @securityDefinitions.apikey X-Auth-Token
+// @in X-Auth-Token
+// @name Authorization
+// @description Secure token
+
 func main() {
 	log.SetFlags(log.Flags() | log.Lshortfile)
 	flag.Parse()

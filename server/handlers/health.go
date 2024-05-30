@@ -12,6 +12,15 @@ type liveness struct {
 
 var LivenessHandler vault.Handler = &liveness{}
 
+// LivenessHandler godoc
+//
+//	@Summary		Liveness check
+//	@Description	Check if application is healthy
+//	@Tags			Health
+//	@Produce		json
+//	@Success		200	{object}	nil "OK, Healthy"
+//	@Failure		500	{string}	string	"Not healthy"
+//	@Router			/live [get]
 func (h *liveness) Handle(cfg vault.HandlerConfig) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		health := healthcheck.NewHandler()
@@ -25,6 +34,15 @@ type readiness struct {
 
 var ReadinessHandler vault.Handler = &readiness{}
 
+// ReadinessHandler godoc
+//
+//	@Summary		Readiness check
+//	@Description	Check if application is ready
+//	@Tags			Health
+//	@Produce		json
+//	@Success		200	{object}	nil "OK, Ready"
+//	@Failure		500	{string}	string	"Not ready"
+//	@Router			/ready [get]
 func (h *readiness) Handle(cfg vault.HandlerConfig) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		health := healthcheck.NewHandler()

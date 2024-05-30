@@ -18,6 +18,11 @@ func Load(mux *CustomMux) {
 	mux.AddRoute(vault.NewRoute("/ready", "GET", vault.Public, handlers.ReadinessHandler))
 	mux.AddRoute(vault.NewRoute("/live", "GET", vault.Public, handlers.LivenessHandler))
 
+	// Documentation
+	mux.AddRoute(vault.NewRoute("/docs", "GET", vault.Public, handlers.SwaggerRedirectHandler))
+	mux.AddRoute(vault.NewRoute("/docs/swagger.json", "GET", vault.Public, handlers.SwaggerJsonHandler))
+	mux.AddRoute(vault.NewRoute("/docs/.*", "GET", vault.Public, handlers.SwaggerBaseHandler))
+
 	// Authenticated endpoints
 	mux.AddRoute(vault.NewRoute("/token", "GET", vault.EnvironmentAdmin, handlers.TokenListHandler))
 	mux.AddRoute(vault.NewRoute("/token", "POST", vault.EnvironmentAdmin, handlers.TokenPostHandler))
@@ -27,6 +32,7 @@ func Load(mux *CustomMux) {
 	mux.AddRoute(vault.NewRoute("/environment", "GET", vault.MasterAdmin, handlers.EnvironmentListHandler))
 	mux.AddRoute(vault.NewRoute("/environment", "POST", vault.MasterAdmin, handlers.EnvironmentPostHandler))
 	mux.AddRoute(vault.NewRoute("/environment/"+objectIdRegex, "GET", vault.MasterAdmin, handlers.EnvironmentGetHandler))
+	mux.AddRoute(vault.NewRoute("/environment/"+objectIdRegex, "DELETE", vault.MasterAdmin, handlers.EnvironmentDeleteHandler))
 
 	mux.AddRoute(vault.NewRoute("/secret", "GET", vault.ReadWrite, handlers.SecretListHandler))
 	mux.AddRoute(vault.NewRoute("/secret", "POST", vault.ReadWrite, handlers.SecretPostHandler))
